@@ -39,9 +39,14 @@ def write_csv(ct, temp, hum):
    writer.writerow(row)
    f.close()
 
+def run_command(command):
+   os.system(command)
+
 ##################
 # START
 ##################
+
+# PREP
 
 # obtain current sensor readings
 temp = sensor.temperature
@@ -51,16 +56,18 @@ hum = sensor.relative_humidity
 # ex: 'arecord -d 600 -D plughw -c1 -f S32_LE -t wav -V mono -v /home/pi/DDMMYY-recording.wav'
 command = 'arecord -d ' + str(duration) + ' -D plughw -c1 -f S32_LE -t wav -V mono -v ' + path + str(ct) + '-recording.wav'
 
-# log start, along with command string
+# END PREP
+
+#1 log start, along with command string
 start_log(command)
 
-# obtain recording
-os.system(command)
+#2 obtain recording
+run_command(command)
 
-# end log
+#3 end log
 end_log(ct, temp, hum)
 
-# write to CSV
+#4 write to CSV
 write_csv(ct, temp, hum)
 
 ##################
