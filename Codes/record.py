@@ -1,9 +1,7 @@
 #!/usr/bin/python3
 
-"""
-Script for recording sound from MEMS mic 
-author:caling/jun
-"""
+#Script for recording sound from MEMS mic 
+
 import os
 import time
 from datetime import datetime
@@ -30,7 +28,7 @@ logging.info('Record Start: %s', datetime.now())
 path = config['RECORD']['record_path']
 duration = int(config['RECORD']['record_duration']) * 60 #record for 10 minutes=600 secs
 os.system('arecord -d ' + str(duration) +\
-   ' -D dmic_sv -c1 -f S32_LE -t wav -V mono -v '\
+   ' -D plughw -c1 -f S32_LE -t wav -V mono -v '\
    + path + str(ct) + '-recording.wav')     #deleted -r 48000 before -f to reduce file size
   
 #csv log
