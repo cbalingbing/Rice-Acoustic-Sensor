@@ -13,12 +13,9 @@ i2c = board.I2C()
 sensor = adafruit_ahtx0.AHTx0(i2c)
 config = configparser.ConfigParser()
 
+##################
 # VARIABLE SETTING
-
-# obtain timing-based data
-ct = time.time()
-temp = sensor.temperature
-hum = sensor.relative_humidity
+##################
 
 # load configuration from file
 config.read('config_record.ini')
@@ -31,11 +28,18 @@ duration = int(config['RECORD']['record_duration']) * 60
 # set logging
 logging.basicConfig(filename=log_path, level=logging.DEBUG)
 
+# obtain time-based data
+ct = time.time()
+temp = sensor.temperature
+hum = sensor.relative_humidity
+
 # create arecord command
 # ex: 'arecord -d 600 -D plughw -c1 -f S32_LE -t wav -V mono -v /home/pi/DDMMYY-recording.wav'
 command = 'arecord -d ' + str(duration) + ' -D ' + device_name + ' -c' + channel_count + ' -f S32_LE -t wav -V mono -v ' + path + str(ct) + '-recording.wav'
 
+#####################
 # FUNCTION DEFINITION
+#####################
 
 def start_log():
    logging.info('Record Start: %s', datetime.now())
@@ -56,9 +60,9 @@ def write_csv():
 def run_command():
    os.system(command)
 
-##################
-# START
-##################
+####################
+# MAIN FUNCTIONALITY
+####################
 
 #1 log start, along with command string
 start_log()
@@ -72,6 +76,3 @@ end_log()
 #4 write to CSV
 write_csv()
 
-##################
-# END
-##################
