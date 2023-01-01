@@ -22,26 +22,47 @@ config.read('config_record.ini')
 path = config['RECORD']['record_path']
 duration = int(config['RECORD']['record_duration']) * 60
 
+# FUNCTION DEF
+def start_log(command):
+   logging.info('Record Start: %s', datetime.now())
+   logging.info('Command String: %s', command)
+
+def end_log(ct, temp, hum):
+   logging.info('Record End: %s', datetime.now())
+   logging.info('File : %s-recording.wav, Temperature: %s, Humidity: %s', ct, temp, hum)
+   print('log saved...')
+
+def write_csv(ct, temp, hum):
+   f = open(config['CSV']['csv_path'],'a')
+   writer = csv.writer(f)
+   row = [datetime.fromtimestamp(ct),str(ct)+'-recording.wav','{0:.2f}'.format(temp),'{0:.2f}'.format(hum)]
+   writer.writerow(row)
+   f.close()
+
+##################
+# START
+##################
+
 # obtain current sensor readings
 temp = sensor.temperature
 hum = sensor.relative_humidity
 
-# start log
-logging.info('Record Start: %s', datetime.now())
+# create arecord command
+# ex: 'arecord -d 600 -D plughw -c1 -f S32_LE -t wav -V mono -v /home/pi/DDMMYY-recording.wav'
+command = 'arecord -d ' + str(duration) + ' -D plughw -c1 -f S32_LE -t wav -V mono -v ' + path + str(ct) + '-recording.wav'
+
+# log start, along with command string
+start_log(command)
 
 # obtain recording
-# 'arecord -d 600 -D plughw -c1 -f S32_LE -t wav -V mono -v /home/pi/DDMMYY-recording.wav'
-os.system('arecord -d ' + str(duration) + ' -D plughw -c1 -f S32_LE -t wav -V mono -v ' + path + str(ct) + '-recording.wav')     #deleted -r 48000 before -f to reduce file size
+os.system(command)
 
 # end log
-logging.info('Record End: %s', datetime.now())
-logging.info('File : %s-recording.wav, Temperature: %s, Humidity: %s', ct, temp, hum)
-print('log saved...')
+end_log(ct, temp, hum)
 
-#csv log
-f = open(config['CSV']['csv_path'],'a')
-writer = csv.writer(f)
-row = [datetime.fromtimestamp(ct),str(ct)+'-recording.wav','{0:.2f}'.format(temp),'{0:.2f}'.format(hum)]
-writer.writerow(row)
-f.close()
+# write to CSV
+write_csv(ct, temp, hum)
 
+##################
+# END
+##################
