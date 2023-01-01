@@ -8,9 +8,6 @@ import logging
 import csv
 import configparser
 
-# set logging
-logging.basicConfig(filename='/home/pi/irri-logs.log', level=logging.DEBUG)
-
 # connect devices, other housekeeping
 i2c = board.I2C()
 sensor = adafruit_ahtx0.AHTx0(i2c)
@@ -26,9 +23,13 @@ hum = sensor.relative_humidity
 # load configuration from file
 config.read('config_record.ini')
 path = config['RECORD']['record_path']
+log_path = config['LOG']['run_log']
 channel_count = str(config['RECORD']['channel_count'])
 device_name = config['RECORD']['device_name']
 duration = int(config['RECORD']['record_duration']) * 60
+
+# set logging
+logging.basicConfig(filename=log_path, level=logging.DEBUG)
 
 # create arecord command
 # ex: 'arecord -d 600 -D plughw -c1 -f S32_LE -t wav -V mono -v /home/pi/DDMMYY-recording.wav'
