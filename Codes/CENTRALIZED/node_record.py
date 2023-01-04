@@ -61,4 +61,3 @@ end_log()
 
 #4 write to CSV
 write_csv()
-
