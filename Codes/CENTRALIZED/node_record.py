@@ -14,6 +14,7 @@ import sys
 path = sys.argv[1]
 log_path = sys.argv[2]
 csv_path = sys.argv[3]
+node_counter = int(sys.argv[4])
 command = 'some command\n'
 
 # set logging
@@ -27,22 +28,22 @@ ct = time.time()
 #####################
 
 def start_log():
-   logging.info('Record Start: %s', datetime.now())
+   logging.info('Device %i Record Start: %s', node_counter, datetime.now())
 
 def end_log():
-   logging.info('Record End: %s', datetime.now())
-   logging.info('File : %s-recording.wav, Temperature:, Humidity:', ct)
+   logging.info('Device %i Record End: %s', node_counter, datetime.now())
+   logging.info('Device %i File : %s-recording.wav, Temperature:, Humidity:', node_counter, ct)
    print('log saved...')
 
 def write_csv():
    f = open(csv_path,'a')
    writer = csv.writer(f)
-   row = [datetime.fromtimestamp(ct),str(ct)+'-recording.wav']
+   row = [node_counter,datetime.fromtimestamp(ct),str(ct)+'-recording.wav']
    writer.writerow(row)
    f.close()
 
 def run_command():
-   f = open(path + str(ct) + ".txt", "w")
+   f = open(path + str(node_counter) + '_' + str(ct) + ".txt", "w")
    f.write(command)
    f.close()
 
