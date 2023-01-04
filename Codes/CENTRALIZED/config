@@ -1,0 +1,17 @@
+# main python file name
+python_script="node_record.py"
+
+# array of nodes, one IP address per line
+IP_ARRAY=(
+        192.168.1.187
+        192.168.1.234
+)
+
+# username used
+username="pi"
+
+# path configurations
+audio_path="/home/pi/insect_sounds/"
+log_path="/home/pi/irri-logs.log"
+csv_path="/home/pi/csv-logs.log"
+

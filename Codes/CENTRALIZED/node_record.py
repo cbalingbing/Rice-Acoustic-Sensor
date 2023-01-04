@@ -4,19 +4,17 @@ import time
 from datetime import datetime
 import logging
 import csv
-import configparser
-
-# connect devices, other housekeeping
-config = configparser.ConfigParser()
+import sys
 
 ##################
 # VARIABLE SETTING
 ##################
 
 # load configuration from file
-config.read('config_record.ini')
-path = config['RECORD']['record_path']
-log_path = config['LOG']['run_log']
+path = sys.argv[1]
+log_path = sys.argv[2]
+csv_path = sys.argv[3]
+command = 'some command\n'
 
 # set logging
 logging.basicConfig(filename=log_path, level=logging.DEBUG)
@@ -37,7 +35,7 @@ def end_log():
    print('log saved...')
 
 def write_csv():
-   f = open(config['CSV']['csv_path'],'a')
+   f = open(csv_path,'a')
    writer = csv.writer(f)
    row = [datetime.fromtimestamp(ct),str(ct)+'-recording.wav']
    writer.writerow(row)
@@ -45,7 +43,7 @@ def write_csv():
 
 def run_command():
    f = open(path + str(ct) + ".txt", "w")
-   f.write("some content")
+   f.write(command)
    f.close()
 
 ####################

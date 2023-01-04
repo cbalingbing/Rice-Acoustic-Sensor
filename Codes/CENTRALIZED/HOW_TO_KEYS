@@ -1,0 +1,8 @@
+# generate key
+ssh-keygen
+	enter all
+# send key to remote device
+ssh-copy-id -i ~/.ssh/id_rsa 192.168.X.X
+	enter password on prompt
+# test access via ssh without password
+ssh 192.168.X.X
