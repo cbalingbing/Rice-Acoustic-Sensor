@@ -1,17 +1,25 @@
 # main python file name
-python_script="node_record.py"
+python_script="node_record_hw.py"
 
 # array of nodes, one IP address per line
 IP_ARRAY=(
-        192.168.1.187
-        192.168.1.234
+        192.168.1.229
 )
 
 # username used
 username="pi"
 
+# duration in seconds
+duration=10
+
+# hardware name from "aplay -L"
+mic_name="plughw"
+
+# channel count for testing
+channel_count=1
+
 # path configurations
-audio_path="/mnt/backup_disk/insect_sounds/"
-log_path="/mnt/backup_disk/logs/irri-logs.log"
-csv_path="/mnt/backup_disk/csv/csv-logs.log"
+audio_path="/mnt/MainStorage/insect_sounds/"
+log_path="/mnt/MainStorage/logs/irri-logs.log"
+csv_path="/mnt/MainStorage/csv/csv-logs.log"
 
